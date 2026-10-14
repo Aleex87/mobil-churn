@@ -17,7 +17,23 @@ on:
           - kundbas_ny_leverans.csv
 
 jobs:
+  datakontroll:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - run: pip install -e ".[data]"
+
+      - name: Validate customer data
+        env:
+          DATA_FILE: ${{ inputs.data_file || 'kundbas.csv' }}
+        run: python kontroller/schema.py "data/$DATA_FILE"
   allt:
+    needs: datakontroll
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
