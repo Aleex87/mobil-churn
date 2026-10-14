@@ -1,6 +1,20 @@
 name: CI
 
-on: push
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      data_file:
+        description: "CSV file to validate"
+        required: true
+        default: "kundbas.csv"
+        type: choice
+        options:
+          - kundbas.csv
+          - kundbas_ny_leverans.csv
 
 jobs:
   allt:
